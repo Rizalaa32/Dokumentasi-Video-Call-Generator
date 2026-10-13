@@ -54,7 +54,7 @@
       notif: { whatsapp: true, telegram: true, sms: false, email: false },
       notifStyle: 'color', alarm: false, vibrate: false, bg: 'overlay', shade: false
     },
-    nav: { visible: true, type: '3buttons', bg: 'transparent', style: 'lines', order: 'rhb' },
+    nav: { visible: true, type: '3buttons', bg: 'solid', style: 'lines', order: 'rhb' },
     export: { res: 'fhd_20_9', format: 'jpg', quality: 92 }
   });
 
@@ -678,8 +678,13 @@
       ctx.fill();
     } else {
       ctx.strokeStyle = '#ffffff';
-      ctx.shadowColor = 'rgba(0,0,0,0.55)';
-      ctx.shadowBlur = 3 * u;
+      if (state.nav.bg === 'transparent') {
+        ctx.shadowColor = 'rgba(0,0,0,0.55)';
+        ctx.shadowBlur = 3 * u;
+      } else {
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+      }
       ctx.lineWidth = 1.6 * u;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
