@@ -142,7 +142,7 @@
               <input type="range" id="pipRadius" min="0" max="24" step="0.5" data-bind="pip.radius" data-unit="dp" />
             </div>
             <div class="field">
-              <div class="field-head"><label for="pipBorder">Bingkai</label><output data-for="pipBorder"></output></div>
+              <div class="field-head"><label for="pipBorder">Bingkai putih (0 = polos WhatsApp)</label><output data-for="pipBorder"></output></div>
               <input type="range" id="pipBorder" min="0" max="4" step="0.25" data-bind="pip.border" data-unit="dp" />
             </div>
             <div class="field">
@@ -151,8 +151,9 @@
             </div>
           </div>
 
-          <label class="toggle"><span>Bayangan halus</span><input type="checkbox" data-bind="pip.shadow" /><i></i></label>
-          <label class="toggle"><span>Mirror (efek kamera depan)</span><input type="checkbox" data-bind="pip.mirror" /><i></i></label>
+          <label class="toggle"><span>Bayangan halus (elevation shadow)</span><input type="checkbox" data-bind="pip.shadow" /><i></i></label>
+          <label class="toggle"><span>Mirror (efek cermin kamera depan)</span><input type="checkbox" data-bind="pip.mirror" /><i></i></label>
+          <label class="toggle"><span>Tampilkan label "YOU" (khas WhatsApp)</span><input type="checkbox" data-bind="pip.showYouTag" /><i></i></label>
           <label class="toggle"><span>Tampilkan PiP</span><input type="checkbox" data-bind="pip.visible" /><i></i></label>
         </div>
       </details>
@@ -294,6 +295,13 @@
         <div class="panel-body">
           <label class="toggle"><span>Tampilkan bar navigasi</span><input type="checkbox" data-bind="nav.visible" /><i></i></label>
           <div class="field">
+            <div class="field-head"><span>Latar Nav Bar</span></div>
+            <div class="seg">
+              <label><input type="radio" name="navBg" value="solid" data-bind="nav.bg" /><span>Hitam Solid (Pekat)</span></label>
+              <label><input type="radio" name="navBg" value="transparent" data-bind="nav.bg" /><span>Transparan (Full Foto)</span></label>
+            </div>
+          </div>
+          <div class="field">
             <div class="field-head"><span>Gaya tombol Recents</span></div>
             <div class="seg">
               <label><input type="radio" name="navStyle" value="lines" data-bind="nav.style" /><span>☰ Garis 3</span></label>
@@ -310,25 +318,30 @@
         </div>
       </details>
 
-      <!-- 5. EXPORT -->
+      <!-- 5. UKURAN HP & EKSPOR -->
       <section class="export-card" aria-labelledby="exportTitle">
         <div class="flex items-center justify-between">
-          <h2 id="exportTitle" class="text-sm font-semibold">Ekspor Gambar</h2>
-          <span class="text-[11px] text-slate-400" id="exportInfo"></span>
+          <h2 id="exportTitle" class="text-sm font-semibold">Ukuran Layar HP &amp; Ekspor</h2>
+          <span class="text-[11px] font-semibold text-emerald-400" id="exportInfo"></span>
+        </div>
+        <div class="field">
+          <div class="field-head"><label for="resSelect">Resolusi Layar Smartphone</label></div>
+          <select id="resSelect" class="text-input font-medium" data-bind="export.res">
+            <option value="fhd_20_9">1080 × 2400 px — 20:9 FHD+ (Standar HP Modern: Xiaomi/Oppo/Vivo/Realme)</option>
+            <option value="hd_20_9">720 × 1600 px — 20:9 HD+ (Standar HP Hemat / Ringkas)</option>
+            <option value="fhd_19_5">1080 × 2340 px — 19.5:9 FHD+ (Samsung S Series / Flagship)</option>
+            <option value="fhd_16_9">1080 × 1920 px — 16:9 Full HD (HP Klasik / Rasio Video)</option>
+          </select>
         </div>
         <div class="grid grid-cols-2 gap-2">
-          <div class="seg">
-            <label><input type="radio" name="res" value="hd" data-bind="export.res" /><span>HD 720p</span></label>
-            <label><input type="radio" name="res" value="fhd" data-bind="export.res" /><span>Full HD</span></label>
-          </div>
           <div class="seg">
             <label><input type="radio" name="fmt" value="jpg" data-bind="export.format" /><span>JPG</span></label>
             <label><input type="radio" name="fmt" value="png" data-bind="export.format" /><span>PNG</span></label>
           </div>
-        </div>
-        <div class="field" id="qualityField">
-          <div class="field-head"><label for="quality">Kualitas JPG</label><output data-for="quality"></output></div>
-          <input type="range" id="quality" min="60" max="100" step="1" data-bind="export.quality" data-unit="%" />
+          <div class="field mb-0" id="qualityField">
+            <div class="field-head !mb-1"><label for="quality">Kualitas JPG</label><output data-for="quality"></output></div>
+            <input type="range" id="quality" min="60" max="100" step="1" data-bind="export.quality" data-unit="%" />
+          </div>
         </div>
         <button class="btn btn-primary btn-lg w-full" id="downloadBtn" type="button">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>

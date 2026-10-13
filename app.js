@@ -27,12 +27,16 @@
   };
 
   const FONT = 'Roboto, "Segoe UI", "Helvetica Neue", Arial, sans-serif';
-  const ASPECT = 16 / 9;
   const LIMITS = { main: { min: 20, max: 250 }, pip: { min: 50, max: 300 } };
-  const RES = { hd: [720, 1280], fhd: [1080, 1920] };
+  const RES = {
+    fhd_20_9: [1080, 2400],
+    hd_20_9: [720, 1600],
+    fhd_19_5: [1080, 2340],
+    fhd_16_9: [1080, 1920]
+  };
 
   /* ---------------- State ---------------- */
-  const nowHHMM = (sep = ':') => {
+  const nowHHMM = (sep = '.') => {
     const d = new Date();
     return pad2(d.getHours()) + sep + pad2(d.getMinutes());
   };
@@ -40,18 +44,18 @@
   const defaults = () => ({
     main: { zoom: 100, x: 0, y: 0, blurBg: true },
     pip: {
-      zoom: 100, x: 0, y: 0, pos: 'br', size: 24, radius: 6, border: 1,
-      borderColor: '#ffffff', shadow: true, mirror: false, visible: true
+      zoom: 100, x: 0, y: 0, pos: 'br', size: 24, radius: 14, border: 0,
+      borderColor: '#ffffff', shadow: true, mirror: false, showYouTag: false, visible: true
     },
     status: {
-      mode: 'builtin', time: '09:13', sep: ':', live: false,
+      mode: 'builtin', time: '09.00', sep: '.', live: false,
       battery: 53, charging: false, batteryStyle: 'pill',
       network: '4G', signal: 4, wifi: false, wifiLevel: 3, speed: '221 K/s',
       notif: { whatsapp: true, telegram: true, sms: false, email: false },
-      notifStyle: 'color', alarm: true, vibrate: true, bg: 'overlay', shade: true
+      notifStyle: 'color', alarm: false, vibrate: false, bg: 'overlay', shade: false
     },
-    nav: { visible: true, style: 'lines', order: 'rhb' },
-    export: { res: 'fhd', format: 'jpg', quality: 92 }
+    nav: { visible: true, bg: 'solid', style: 'lines', order: 'rhb' },
+    export: { res: 'fhd_20_9', format: 'jpg', quality: 92 }
   });
 
   let state = defaults();
@@ -80,18 +84,20 @@
     const statusH = 28 * u;
     const navH = state.nav.visible ? 44 * u : 0;
     const solidStatus = state.status.mode === 'builtin' && state.status.bg !== 'overlay';
+    const solidNav = state.nav.visible && state.nav.bg === 'solid';
     const photoTop = solidStatus ? statusH : 0;
-    const photo = { x: 0, y: photoTop, w: W, h: H - navH - photoTop };
+    const photoBottom = solidNav ? navH : 0;
+    const photo = { x: 0, y: photoTop, w: W, h: H - photoBottom - photoTop };
 
     const p = state.pip;
     const pw = (W * p.size) / 100;
     const ph = (pw * 4) / 3;
-    const m = 10 * u;
+    const m = 12 * u;
     const right = p.pos.includes('r');
     const bottom = p.pos[0] === 'b';
     const pip = {
       x: right ? W - m - pw : m,
-      y: bottom ? H - navH - m - ph : statusH + m,
+      y: bottom ? H - (state.nav.visible ? navH : 0) - m - ph : statusH + m,
       w: pw,
       h: ph
     };
@@ -254,6 +260,22 @@
       ctx.strokeStyle = p.borderColor;
       rr(ctx, r.x + bw / 2, r.y + bw / 2, r.w - bw, r.h - bw, Math.max(0, rad - bw / 2));
       ctx.stroke();
+      ctx.restore();
+    }
+
+    if (p.showYouTag) {
+      ctx.save();
+      rr(ctx, r.x, r.y, r.w, r.h, rad);
+      ctx.clip();
+      ctx.fillStyle = 'rgba(0,0,0,0.52)';
+      const tagW = 28 * u, tagH = 13 * u;
+      rr(ctx, r.x + 5 * u, r.y + r.h - tagH - 5 * u, tagW, tagH, 3 * u);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `600 ${8 * u}px ${FONT}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('YOU', r.x + 5 * u + tagW / 2, r.y + r.h - tagH / 2 - 4.5 * u);
       ctx.restore();
     }
 
@@ -633,10 +655,13 @@
     const y0 = L.H - L.navH;
     const cy = y0 + L.navH / 2;
     ctx.save();
-    ctx.fillStyle = '#0a0a0b';
-    ctx.fillRect(0, y0, L.W, L.navH);
-    ctx.strokeStyle = 'rgba(232,232,232,0.92)';
-    ctx.lineWidth = 1.5 * u;
+    if (state.nav.bg === 'solid') {
+      ctx.fillStyle = '#000000'; // 100% solid black, tanpa opacity/transparansi
+      ctx.fillRect(0, y0, L.W, L.navH);
+    }
+    // Jika 'transparent', tidak ada bar hitam, tombol mengambang di atas foto
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 1.6 * u;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
@@ -680,10 +705,13 @@
 
   function resizeCanvas() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    const [targetW, targetH] = RES[state.export.res] || [1080, 2400];
+    const aspect = targetH / targetW;
+    screen.style.setProperty('--phone-ratio', `${targetW} / ${targetH}`);
     const cssW = screen.clientWidth;
     if (!cssW) return;
     const w = Math.round(cssW * dpr);
-    const h = Math.round(w * ASPECT);
+    const h = Math.round(w * aspect);
     if (canvas.width !== w || canvas.height !== h) {
       canvas.width = w;
       canvas.height = h;
@@ -714,6 +742,9 @@
   }
 
   function onChange(path, el) {
+    if (path === 'export.res') {
+      resizeCanvas();
+    }
     if (path === 'status.time') {
       state.status.live = false;
       el && el.classList.toggle('invalid', !isValidTime(state.status.time));
@@ -759,9 +790,10 @@
     $('#wifiLevelField').hidden = !state.status.wifi;
     $('#shadeToggle').hidden = state.status.bg !== 'overlay';
     $('#qualityField').hidden = state.export.format !== 'jpg';
-    const [W, H] = RES[state.export.res];
-    $('#exportInfo').textContent = `${W} × ${H} px · ${state.export.format.toUpperCase()}`;
-    $('#downloadBtn span').textContent = `Unduh Gambar (${state.export.format.toUpperCase()})`;
+    const [W, H] = RES[state.export.res] || [1080, 2400];
+    const ratioStr = (W === 1080 && H === 2400) || (W === 720 && H === 1600) ? '20:9' : (W === 1080 && H === 2340) ? '19.5:9' : '16:9';
+    $('#exportInfo').textContent = `${W} × ${H} px (${ratioStr})`;
+    $('#downloadBtn span').textContent = `Unduh Gambar (${W}×${H} ${state.export.format.toUpperCase()})`;
   }
 
   /* =========================================================
