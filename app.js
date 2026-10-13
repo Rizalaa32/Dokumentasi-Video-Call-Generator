@@ -44,7 +44,7 @@
   const defaults = () => ({
     main: { zoom: 100, x: 0, y: 0, blurBg: true },
     pip: {
-      zoom: 100, x: 0, y: 0, pos: 'br', size: 24, radius: 14, border: 0,
+      zoom: 100, x: 0, y: 0, pos: 'br', size: 24, ratio: 1.85, radius: 14, border: 0,
       borderColor: '#ffffff', shadow: true, mirror: false, showYouTag: false, visible: true
     },
     status: {
@@ -92,7 +92,8 @@
 
     const p = state.pip;
     const pw = (W * p.size) / 100;
-    const ph = (pw * 4) / 3;
+    const pratio = p.ratio || 1.85;
+    const ph = pw * pratio;
     const m = 12 * u;
     const right = p.pos.includes('r');
     const bottom = p.pos[0] === 'b';
@@ -777,6 +778,13 @@
   }
 
   function fmtOutput(el) {
+    if (el.id === 'pipRatio') {
+      const v = parseFloat(el.value);
+      if (Math.abs(v - 1.85) < 0.04) return '1.85x (9:16 WA)';
+      if (Math.abs(v - 1.33) < 0.04) return '1.33x (3:4)';
+      if (Math.abs(v - 2.0) < 0.04) return '2.0x (1:2)';
+      return v.toFixed(2) + 'x';
+    }
     const v = parseFloat(el.value);
     const unit = el.dataset.unit || '';
     if (el.dataset.signed) return (v > 0 ? '+' : '') + Math.round(v) + '%';

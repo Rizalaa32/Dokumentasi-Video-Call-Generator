@@ -134,15 +134,19 @@
 
           <div class="grid grid-cols-2 gap-3">
             <div class="field">
-              <div class="field-head"><label for="pipSize">Ukuran</label><output data-for="pipSize"></output></div>
-              <input type="range" id="pipSize" min="15" max="40" step="0.5" data-bind="pip.size" data-unit="%" />
+              <div class="field-head"><label for="pipSize">Lebar PiP</label><output data-for="pipSize"></output></div>
+              <input type="range" id="pipSize" min="15" max="40" step="0.5" value="24" data-bind="pip.size" data-unit="%" />
             </div>
             <div class="field">
-              <div class="field-head"><label for="pipRadius">Sudut</label><output data-for="pipRadius"></output></div>
-              <input type="range" id="pipRadius" min="0" max="24" step="0.5" data-bind="pip.radius" data-unit="dp" />
+              <div class="field-head"><label for="pipRatio">Tinggi PiP (Rasio Aspek)</label><output data-for="pipRatio"></output></div>
+              <input type="range" id="pipRatio" min="1.3" max="2.2" step="0.05" value="1.85" data-bind="pip.ratio" />
             </div>
             <div class="field">
-              <div class="field-head"><label for="pipBorder">Bingkai putih (0 = polos WhatsApp)</label><output data-for="pipBorder"></output></div>
+              <div class="field-head"><label for="pipRadius">Sudut Lengkung</label><output data-for="pipRadius"></output></div>
+              <input type="range" id="pipRadius" min="0" max="24" step="0.5" value="14" data-bind="pip.radius" data-unit="dp" />
+            </div>
+            <div class="field">
+              <div class="field-head"><label for="pipBorder">Bingkai putih (0 = polos WA)</label><output data-for="pipBorder"></output></div>
               <input type="range" id="pipBorder" min="0" max="4" step="0.25" value="0" data-bind="pip.border" data-unit="dp" />
             </div>
             <div class="field">
@@ -297,14 +301,14 @@
           <div class="field">
             <div class="field-head"><span>Latar Nav Bar</span></div>
             <div class="seg">
-              <label><input type="radio" name="navBg" value="transparent" data-bind="nav.bg" /><span>Transparan (Foto Penuh)</span></label>
+              <label><input type="radio" name="navBg" value="transparent" data-bind="nav.bg" checked /><span>Transparan (Foto Penuh)</span></label>
               <label><input type="radio" name="navBg" value="solid" data-bind="nav.bg" /><span>Hitam Solid (Pekat)</span></label>
             </div>
           </div>
           <div class="field">
             <div class="field-head"><span>Tipe Navigasi</span></div>
             <div class="seg">
-              <label><input type="radio" name="navType" value="3buttons" data-bind="nav.type" /><span>3 Tombol (☰ ○ ◁)</span></label>
+              <label><input type="radio" name="navType" value="3buttons" data-bind="nav.type" checked /><span>3 Tombol (☰ ○ ◁)</span></label>
               <label><input type="radio" name="navType" value="gesture" data-bind="nav.type" /><span>Gesture Bar (―)</span></label>
             </div>
           </div>
