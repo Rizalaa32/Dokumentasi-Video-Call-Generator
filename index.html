@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Call Documentation Generator — Template Foto Dokumentasi Video Call Android</title>
+  <meta name="description" content="Buat mockup foto dokumentasi video call Android yang realistis dalam hitungan detik: status bar, foto kegiatan, PiP selfie petugas, dan navigasi Android. 100% diproses di browser Anda." />
+  <meta name="theme-color" content="#060912" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } },
+      corePlugins: { preflight: true }
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-bg" aria-hidden="true"></div>
+
+  <!-- ============ HEADER ============ -->
+  <header class="app-header">
+    <div class="flex items-center gap-3 min-w-0">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 13 5.2 3.5a.5.5 0 0 0 .8-.4V7.9a.5.5 0 0 0-.8-.4L16 11"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
+      </div>
+      <div class="min-w-0">
+        <h1 class="app-title">Video Call Documentation Generator</h1>
+        <p class="app-sub">Template foto dokumentasi video call Android · instan & realistis</p>
+      </div>
+    </div>
+    <div class="hidden md:flex items-center gap-2">
+      <span class="badge">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        100% lokal — foto tidak diunggah
+      </span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar" id="sidebar" aria-label="Panel kontrol">
+
+      <!-- 1. FOTO UTAMA -->
+      <details class="panel" open>
+        <summary>
+          <span class="panel-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg></span>
+          <span><span class="panel-step">Layer 2</span>Foto Utama Kegiatan</span>
+          <svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="panel-body">
+          <div class="dropzone" id="mainDrop" data-target="main" tabindex="0" role="button" aria-label="Unggah foto utama">
+            <input type="file" id="mainFile" accept="image/*" hidden />
+            <div class="dz-thumb" id="mainThumb"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg></div>
+            <div class="dz-text min-w-0">
+              <strong>Tarik &amp; lepas foto kegiatan</strong>
+              <span>atau klik untuk memilih · JPG / PNG / WebP</span>
+              <div class="dz-name" id="mainName"></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-head"><label for="mainZoom">Zoom / Skala</label><output data-for="mainZoom"></output></div>
+            <input type="range" id="mainZoom" min="20" max="250" step="1" data-bind="main.zoom" data-unit="%" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="field">
+              <div class="field-head"><label for="mainX">Geser X</label><output data-for="mainX"></output></div>
+              <input type="range" id="mainX" min="-100" max="100" step="0.5" data-bind="main.x" data-signed="1" />
+            </div>
+            <div class="field">
+              <div class="field-head"><label for="mainY">Geser Y</label><output data-for="mainY"></output></div>
+              <input type="range" id="mainY" min="-100" max="100" step="0.5" data-bind="main.y" data-signed="1" />
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-sm" id="mainCover" type="button" title="Isi penuh layar (cover)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>Cover / Fill</button>
+            <button class="btn btn-sm" id="mainFit" type="button" title="Tampilkan seluruh foto (fit)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="3" width="12" height="18" rx="2"/></svg>Fit</button>
+            <button class="btn btn-sm" id="mainCenter" type="button" title="Posisikan di tengah">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>Center</button>
+          </div>
+          <label class="toggle"><span>Latar blur jika foto tidak memenuhi layar</span><input type="checkbox" data-bind="main.blurBg" /><i></i></label>
+        </div>
+      </details>
+
+      <!-- 2. FOTO PETUGAS (PiP) -->
+      <details class="panel" open>
+        <summary>
+          <span class="panel-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+          <span><span class="panel-step">Layer 3</span>Foto Selfie Petugas (PiP)</span>
+          <svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="panel-body">
+          <div class="dropzone" id="pipDrop" data-target="pip" tabindex="0" role="button" aria-label="Unggah foto selfie petugas">
+            <input type="file" id="pipFile" accept="image/*" hidden />
+            <div class="dz-thumb" id="pipThumb"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg></div>
+            <div class="dz-text min-w-0">
+              <strong>Tarik &amp; lepas foto selfie</strong>
+              <span>Kamera depan · rasio 3:4</span>
+              <div class="dz-name" id="pipName"></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-head"><label for="pipZoom">Zoom wajah</label><output data-for="pipZoom"></output></div>
+            <input type="range" id="pipZoom" min="50" max="300" step="1" data-bind="pip.zoom" data-unit="%" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="field">
+              <div class="field-head"><label for="pipX">Geser X</label><output data-for="pipX"></output></div>
+              <input type="range" id="pipX" min="-100" max="100" step="0.5" data-bind="pip.x" data-signed="1" />
+            </div>
+            <div class="field">
+              <div class="field-head"><label for="pipY">Geser Y</label><output data-for="pipY"></output></div>
+              <input type="range" id="pipY" min="-100" max="100" step="0.5" data-bind="pip.y" data-signed="1" />
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-head"><span>Posisi PiP</span></div>
+            <div class="seg" role="radiogroup" aria-label="Posisi PiP">
+              <label><input type="radio" name="pipPos" value="br" data-bind="pip.pos" /><span>↘ Kanan Bawah</span></label>
+              <label><input type="radio" name="pipPos" value="bl" data-bind="pip.pos" /><span>↙ Kiri Bawah</span></label>
+              <label><input type="radio" name="pipPos" value="tr" data-bind="pip.pos" /><span>↗ Kanan Atas</span></label>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="field">
+              <div class="field-head"><label for="pipSize">Ukuran</label><output data-for="pipSize"></output></div>
+              <input type="range" id="pipSize" min="15" max="40" step="0.5" data-bind="pip.size" data-unit="%" />
+            </div>
+            <div class="field">
+              <div class="field-head"><label for="pipRadius">Sudut</label><output data-for="pipRadius"></output></div>
+              <input type="range" id="pipRadius" min="0" max="24" step="0.5" data-bind="pip.radius" data-unit="dp" />
+            </div>
+            <div class="field">
+              <div class="field-head"><label for="pipBorder">Bingkai</label><output data-for="pipBorder"></output></div>
+              <input type="range" id="pipBorder" min="0" max="4" step="0.25" data-bind="pip.border" data-unit="dp" />
+            </div>
+            <div class="field">
+              <div class="field-head"><label for="pipBorderColor">Warna bingkai</label></div>
+              <input type="color" id="pipBorderColor" class="color-input" data-bind="pip.borderColor" />
+            </div>
+          </div>
+
+          <label class="toggle"><span>Bayangan halus</span><input type="checkbox" data-bind="pip.shadow" /><i></i></label>
+          <label class="toggle"><span>Mirror (efek kamera depan)</span><input type="checkbox" data-bind="pip.mirror" /><i></i></label>
+          <label class="toggle"><span>Tampilkan PiP</span><input type="checkbox" data-bind="pip.visible" /><i></i></label>
+        </div>
+      </details>
+
+      <!-- 3. STATUS BAR -->
+      <details class="panel" open>
+        <summary>
+          <span class="panel-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 11v2"/><path d="M6 11v2M10 11v2"/></svg></span>
+          <span><span class="panel-step">Layer 1</span>Status Bar Android</span>
+          <svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="panel-body">
+          <div class="seg" role="radiogroup" aria-label="Mode status bar">
+            <label><input type="radio" name="statusMode" value="builtin" data-bind="status.mode" /><span>Bawaan (render kode)</span></label>
+            <label><input type="radio" name="statusMode" value="custom" data-bind="status.mode" /><span>Gambar kustom</span></label>
+          </div>
+
+          <!-- custom image -->
+          <div id="statusCustom" class="flex flex-col gap-3" hidden>
+            <div class="dropzone" id="statusDrop" data-target="status" tabindex="0" role="button" aria-label="Unggah gambar status bar">
+              <input type="file" id="statusFile" accept="image/*" hidden />
+              <div class="dz-thumb dz-thumb-wide" id="statusThumb"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg></div>
+              <div class="dz-text min-w-0">
+                <strong>Unggah strip status bar</strong>
+                <span>Potongan screenshot bagian atas layar</span>
+                <div class="dz-name" id="statusName"></div>
+              </div>
+            </div>
+            <p class="note">Gambar akan diregangkan selebar layar, tinggi mengikuti rasio aslinya.</p>
+          </div>
+
+          <!-- builtin -->
+          <div id="statusBuiltin" class="flex flex-col gap-4">
+            <div class="field">
+              <div class="field-head"><label for="timeInput">Jam (24 jam)</label><span class="text-[11px] text-slate-500">contoh: 09:13 · 0913 · 9.13</span></div>
+              <div class="flex gap-2">
+                <input type="text" id="timeInput" class="text-input font-semibold tracking-wide" inputmode="numeric" maxlength="5" autocomplete="off" data-bind="status.time" />
+                <button class="btn btn-sm whitespace-nowrap" id="nowBtn" type="button">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Jam Sekarang</button>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="field">
+                <div class="field-head"><span>Pemisah</span></div>
+                <div class="seg">
+                  <label><input type="radio" name="timeSep" value=":" data-bind="status.sep" /><span>09:13</span></label>
+                  <label><input type="radio" name="timeSep" value="." data-bind="status.sep" /><span>09.13</span></label>
+                </div>
+              </div>
+              <div class="field flex flex-col justify-end">
+                <label class="toggle"><span>Jam live</span><input type="checkbox" id="liveClock" data-bind="status.live" /><i></i></label>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="field">
+              <div class="field-head"><label for="battery">Baterai</label><output data-for="battery"></output></div>
+              <input type="range" id="battery" min="1" max="100" step="1" data-bind="status.battery" data-unit="%" />
+            </div>
+            <div class="grid grid-cols-2 gap-3 items-end">
+              <label class="toggle"><span>⚡ Mengisi daya</span><input type="checkbox" data-bind="status.charging" /><i></i></label>
+              <div class="seg">
+                <label><input type="radio" name="battStyle" value="pill" data-bind="status.batteryStyle" /><span>Pill</span></label>
+                <label><input type="radio" name="battStyle" value="stock" data-bind="status.batteryStyle" /><span>Stock</span></label>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="field">
+                <div class="field-head"><label for="network">Jaringan</label></div>
+                <select id="network" class="text-input" data-bind="status.network">
+                  <option value="5G">5G</option>
+                  <option value="4G">4G</option>
+                  <option value="LTE">LTE</option>
+                  <option value="4G+">4G+</option>
+                  <option value="H+">H+</option>
+                  <option value="3G">3G</option>
+                  <option value="none">Tanpa label</option>
+                </select>
+              </div>
+              <div class="field">
+                <div class="field-head"><label for="speedInput">Kecepatan data</label></div>
+                <input type="text" id="speedInput" class="text-input" placeholder="kosong = sembunyi" maxlength="10" data-bind="status.speed" />
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-head"><label for="signal">Sinyal seluler</label><output data-for="signal"></output></div>
+              <input type="range" id="signal" min="0" max="4" step="1" data-bind="status.signal" data-unit="/4" />
+            </div>
+            <label class="toggle"><span>Wi-Fi aktif</span><input type="checkbox" data-bind="status.wifi" /><i></i></label>
+            <div class="field" id="wifiLevelField">
+              <div class="field-head"><label for="wifiLevel">Kekuatan Wi-Fi</label><output data-for="wifiLevel"></output></div>
+              <input type="range" id="wifiLevel" min="1" max="3" step="1" data-bind="status.wifiLevel" data-unit="/3" />
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="field">
+              <div class="field-head"><span>Ikon notifikasi</span></div>
+              <div class="chips">
+                <label class="chip-check"><input type="checkbox" data-bind="status.notif.whatsapp" /><span><i style="background:#25D366"></i>WhatsApp</span></label>
+                <label class="chip-check"><input type="checkbox" data-bind="status.notif.telegram" /><span><i style="background:#2AABEE"></i>Telegram</span></label>
+                <label class="chip-check"><input type="checkbox" data-bind="status.notif.sms" /><span><i style="background:#1a73e8"></i>Pesan</span></label>
+                <label class="chip-check"><input type="checkbox" data-bind="status.notif.email" /><span><i style="background:#EA4335"></i>Email</span></label>
+                <label class="chip-check"><input type="checkbox" data-bind="status.alarm" /><span>⏰ Alarm</span></label>
+                <label class="chip-check"><input type="checkbox" data-bind="status.vibrate" /><span>📳 Getar</span></label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-head"><span>Gaya ikon notifikasi</span></div>
+              <div class="seg">
+                <label><input type="radio" name="notifStyle" value="color" data-bind="status.notifStyle" /><span>Berwarna</span></label>
+                <label><input type="radio" name="notifStyle" value="mono" data-bind="status.notifStyle" /><span>Monokrom</span></label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-head"><span>Latar status bar</span></div>
+              <div class="seg">
+                <label><input type="radio" name="statusBg" value="overlay" data-bind="status.bg" /><span>Transparan</span></label>
+                <label><input type="radio" name="statusBg" value="black" data-bind="status.bg" /><span>Hitam</span></label>
+                <label><input type="radio" name="statusBg" value="white" data-bind="status.bg" /><span>Putih</span></label>
+              </div>
+            </div>
+            <label class="toggle" id="shadeToggle"><span>Bayangan gelap di belakang ikon</span><input type="checkbox" data-bind="status.shade" /><i></i></label>
+          </div>
+        </div>
+      </details>
+
+      <!-- 4. NAV BAR -->
+      <details class="panel">
+        <summary>
+          <span class="panel-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h3M10.5 12a1.5 1.5 0 1 0 3 0 1.5 1.5 0 1 0-3 0M20 9l-3 3 3 3"/></svg></span>
+          <span><span class="panel-step">Bawah</span>Navigasi Android</span>
+          <svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="panel-body">
+          <label class="toggle"><span>Tampilkan bar navigasi</span><input type="checkbox" data-bind="nav.visible" /><i></i></label>
+          <div class="field">
+            <div class="field-head"><span>Gaya tombol Recents</span></div>
+            <div class="seg">
+              <label><input type="radio" name="navStyle" value="lines" data-bind="nav.style" /><span>☰ Garis 3</span></label>
+              <label><input type="radio" name="navStyle" value="square" data-bind="nav.style" /><span>▢ Kotak</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="field-head"><span>Urutan tombol</span></div>
+            <div class="seg">
+              <label><input type="radio" name="navOrder" value="rhb" data-bind="nav.order" /><span>☰ ○ ◁</span></label>
+              <label><input type="radio" name="navOrder" value="bhr" data-bind="nav.order" /><span>◁ ○ ☰</span></label>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- 5. EXPORT -->
+      <section class="export-card" aria-labelledby="exportTitle">
+        <div class="flex items-center justify-between">
+          <h2 id="exportTitle" class="text-sm font-semibold">Ekspor Gambar</h2>
+          <span class="text-[11px] text-slate-400" id="exportInfo"></span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="seg">
+            <label><input type="radio" name="res" value="hd" data-bind="export.res" /><span>HD 720p</span></label>
+            <label><input type="radio" name="res" value="fhd" data-bind="export.res" /><span>Full HD</span></label>
+          </div>
+          <div class="seg">
+            <label><input type="radio" name="fmt" value="jpg" data-bind="export.format" /><span>JPG</span></label>
+            <label><input type="radio" name="fmt" value="png" data-bind="export.format" /><span>PNG</span></label>
+          </div>
+        </div>
+        <div class="field" id="qualityField">
+          <div class="field-head"><label for="quality">Kualitas JPG</label><output data-for="quality"></output></div>
+          <input type="range" id="quality" min="60" max="100" step="1" data-bind="export.quality" data-unit="%" />
+        </div>
+        <button class="btn btn-primary btn-lg w-full" id="downloadBtn" type="button">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+          <span>Unduh Gambar</span>
+        </button>
+      </section>
+    </aside>
+
+    <!-- ============ STAGE / PREVIEW ============ -->
+    <section class="stage" aria-label="Preview langsung">
+      <div class="stage-toolbar">
+        <button class="btn" id="swapBtn" type="button" title="Tukar foto utama dan foto PiP">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M21 3 14 10"/><path d="M8 21H3v-5"/><path d="m3 21 7-7"/></svg>
+          Tukar Foto
+        </button>
+        <button class="btn" id="resetBtn" type="button" title="Kembalikan semua pengaturan ke awal">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Reset
+        </button>
+        <span class="live-chip"><i></i>Live preview</span>
+      </div>
+
+      <div class="phone" id="phone">
+        <span class="phone-btn power" aria-hidden="true"></span>
+        <span class="phone-btn vol" aria-hidden="true"></span>
+        <div class="phone-screen" id="phoneScreen">
+          <canvas id="preview" aria-label="Preview hasil dokumentasi video call" role="img"></canvas>
+          <div class="drop-overlay" id="dropOverlay"><span>Lepaskan untuk mengunggah</span></div>
+        </div>
+      </div>
+
+      <p class="hint">
+        <span><kbd>Seret</kbd> geser foto</span>
+        <span><kbd>Scroll</kbd> zoom</span>
+        <span><kbd>Klik 2×</kbd> ganti foto</span>
+        <span><kbd>Ctrl</kbd>+<kbd>V</kbd> tempel</span>
+        <span><kbd>Ctrl</kbd>+<kbd>S</kbd> unduh</span>
+      </p>
+    </section>
+  </main>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
