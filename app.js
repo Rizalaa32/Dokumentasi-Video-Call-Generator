@@ -54,7 +54,7 @@
       notif: { whatsapp: true, telegram: true, sms: false, email: false },
       notifStyle: 'color', alarm: false, vibrate: false, bg: 'overlay', shade: false
     },
-    nav: { visible: true, bg: 'solid', style: 'lines', order: 'rhb' },
+    nav: { visible: true, type: '3buttons', bg: 'transparent', style: 'lines', order: 'rhb' },
     export: { res: 'fhd_20_9', format: 'jpg', quality: 92 }
   });
 
@@ -82,11 +82,12 @@
   function computeLayout(W, H) {
     const u = W / 360;
     const statusH = 28 * u;
-    const navH = state.nav.visible ? 44 * u : 0;
+    const navH = state.nav.visible ? (state.nav.type === 'gesture' ? 24 * u : 40 * u) : 0;
     const solidStatus = state.status.mode === 'builtin' && state.status.bg !== 'overlay';
     const solidNav = state.nav.visible && state.nav.bg === 'solid';
     const photoTop = solidStatus ? statusH : 0;
     const photoBottom = solidNav ? navH : 0;
+    // Foto utama memenuhi 100% layar (edge-to-edge) saat nav transparan!
     const photo = { x: 0, y: photoTop, w: W, h: H - photoBottom - photoTop };
 
     const p = state.pip;
@@ -95,9 +96,10 @@
     const m = 12 * u;
     const right = p.pos.includes('r');
     const bottom = p.pos[0] === 'b';
+    const bottomGap = state.nav.visible ? (solidNav ? navH + m : 34 * u) : m;
     const pip = {
       x: right ? W - m - pw : m,
-      y: bottom ? H - (state.nav.visible ? navH : 0) - m - ph : statusH + m,
+      y: bottom ? H - bottomGap - ph : statusH + m,
       w: pw,
       h: ph
     };
@@ -254,7 +256,7 @@
     }
     ctx.restore();
 
-    if (bw > 0) {
+    if (bw > 0.05) {
       ctx.save();
       ctx.lineWidth = bw;
       ctx.strokeStyle = p.borderColor;
@@ -651,6 +653,7 @@
 
   /* ---------- Bottom navigation bar ---------- */
   function drawNav(ctx, L) {
+    if (!state.nav.visible) return;
     const u = L.u;
     const y0 = L.H - L.navH;
     const cy = y0 + L.navH / 2;
@@ -660,34 +663,50 @@
       ctx.fillRect(0, y0, L.W, L.navH);
     }
     // Jika 'transparent', tidak ada bar hitam, tombol mengambang di atas foto
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 1.6 * u;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
 
-    const order = state.nav.order === 'rhb' ? ['recents', 'home', 'back'] : ['back', 'home', 'recents'];
-    order.forEach((key, i) => {
-      const cx = L.W * (0.25 + i * 0.25);
-      ctx.beginPath();
-      if (key === 'recents') {
-        if (state.nav.style === 'lines') {
-          for (let k = -1; k <= 1; k++) {
-            ctx.moveTo(cx - 5.4 * u, cy + k * 3.6 * u);
-            ctx.lineTo(cx + 5.4 * u, cy + k * 3.6 * u);
+    if (state.nav.type === 'gesture') {
+      // Modern Android gesture bar: pill putih halus mengambang
+      const gw = 106 * u;
+      const gh = 3.4 * u;
+      const gx = L.W / 2 - gw / 2;
+      const gy = L.H - 12 * u;
+      ctx.shadowColor = 'rgba(0,0,0,0.45)';
+      ctx.shadowBlur = 3 * u;
+      ctx.fillStyle = '#ffffff';
+      rr(ctx, gx, gy, gw, gh, gh / 2);
+      ctx.fill();
+    } else {
+      ctx.strokeStyle = '#ffffff';
+      ctx.shadowColor = 'rgba(0,0,0,0.55)';
+      ctx.shadowBlur = 3 * u;
+      ctx.lineWidth = 1.6 * u;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      const order = state.nav.order === 'rhb' ? ['recents', 'home', 'back'] : ['back', 'home', 'recents'];
+      order.forEach((key, i) => {
+        const cx = L.W * (0.25 + i * 0.25);
+        ctx.beginPath();
+        if (key === 'recents') {
+          if (state.nav.style === 'lines') {
+            for (let k = -1; k <= 1; k++) {
+              ctx.moveTo(cx - 5.4 * u, cy + k * 3.6 * u);
+              ctx.lineTo(cx + 5.4 * u, cy + k * 3.6 * u);
+            }
+          } else {
+            rr(ctx, cx - 5.3 * u, cy - 5.3 * u, 10.6 * u, 10.6 * u, 1.8 * u);
           }
+        } else if (key === 'home') {
+          ctx.arc(cx, cy, 6.2 * u, 0, Math.PI * 2);
         } else {
-          rr(ctx, cx - 5.3 * u, cy - 5.3 * u, 10.6 * u, 10.6 * u, 1.8 * u);
+          ctx.moveTo(cx + 4.4 * u, cy - 5.4 * u);
+          ctx.lineTo(cx - 4.6 * u, cy);
+          ctx.lineTo(cx + 4.4 * u, cy + 5.4 * u);
+          ctx.closePath();
         }
-      } else if (key === 'home') {
-        ctx.arc(cx, cy, 6.2 * u, 0, Math.PI * 2);
-      } else {
-        ctx.moveTo(cx + 4.4 * u, cy - 5.4 * u);
-        ctx.lineTo(cx - 4.6 * u, cy);
-        ctx.lineTo(cx + 4.4 * u, cy + 5.4 * u);
-        ctx.closePath();
-      }
-      ctx.stroke();
-    });
+        ctx.stroke();
+      });
+    }
     ctx.restore();
   }
 
@@ -790,6 +809,8 @@
     $('#wifiLevelField').hidden = !state.status.wifi;
     $('#shadeToggle').hidden = state.status.bg !== 'overlay';
     $('#qualityField').hidden = state.export.format !== 'jpg';
+    if ($('#recentsStyleField')) $('#recentsStyleField').hidden = !state.nav.visible || state.nav.type === 'gesture';
+    if ($('#navOrderField')) $('#navOrderField').hidden = !state.nav.visible || state.nav.type === 'gesture';
     const [W, H] = RES[state.export.res] || [1080, 2400];
     const ratioStr = (W === 1080 && H === 2400) || (W === 720 && H === 1600) ? '20:9' : (W === 1080 && H === 2340) ? '19.5:9' : '16:9';
     $('#exportInfo').textContent = `${W} × ${H} px (${ratioStr})`;

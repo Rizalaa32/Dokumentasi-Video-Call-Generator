@@ -143,7 +143,7 @@
             </div>
             <div class="field">
               <div class="field-head"><label for="pipBorder">Bingkai putih (0 = polos WhatsApp)</label><output data-for="pipBorder"></output></div>
-              <input type="range" id="pipBorder" min="0" max="4" step="0.25" data-bind="pip.border" data-unit="dp" />
+              <input type="range" id="pipBorder" min="0" max="4" step="0.25" value="0" data-bind="pip.border" data-unit="dp" />
             </div>
             <div class="field">
               <div class="field-head"><label for="pipBorderColor">Warna bingkai</label></div>
@@ -297,18 +297,25 @@
           <div class="field">
             <div class="field-head"><span>Latar Nav Bar</span></div>
             <div class="seg">
+              <label><input type="radio" name="navBg" value="transparent" data-bind="nav.bg" /><span>Transparan (Foto Penuh)</span></label>
               <label><input type="radio" name="navBg" value="solid" data-bind="nav.bg" /><span>Hitam Solid (Pekat)</span></label>
-              <label><input type="radio" name="navBg" value="transparent" data-bind="nav.bg" /><span>Transparan (Full Foto)</span></label>
             </div>
           </div>
           <div class="field">
+            <div class="field-head"><span>Tipe Navigasi</span></div>
+            <div class="seg">
+              <label><input type="radio" name="navType" value="3buttons" data-bind="nav.type" /><span>3 Tombol (☰ ○ ◁)</span></label>
+              <label><input type="radio" name="navType" value="gesture" data-bind="nav.type" /><span>Gesture Bar (―)</span></label>
+            </div>
+          </div>
+          <div class="field" id="recentsStyleField">
             <div class="field-head"><span>Gaya tombol Recents</span></div>
             <div class="seg">
               <label><input type="radio" name="navStyle" value="lines" data-bind="nav.style" /><span>☰ Garis 3</span></label>
               <label><input type="radio" name="navStyle" value="square" data-bind="nav.style" /><span>▢ Kotak</span></label>
             </div>
           </div>
-          <div class="field">
+          <div class="field" id="navOrderField">
             <div class="field-head"><span>Urutan tombol</span></div>
             <div class="seg">
               <label><input type="radio" name="navOrder" value="rhb" data-bind="nav.order" /><span>☰ ○ ◁</span></label>
